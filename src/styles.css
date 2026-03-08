@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+button {
+    outline: none;
+    background: none;
+    border: none;
+}
+
+body {
+    background-image: url("./assets/bg-2.png");
+    width: 100vw;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size:100% 100%;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 65% 1fr;
+    grid-template-rows: 100%;
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    height: 7%;
+}
+
+header h1 {
+    grid-column: 1/2;
+    text-align: center;
+    place-self: center;
+    font-size: clamp(2rem, 2vw, 3rem);
+}
+
+#add-project {
+    cursor: pointer;
+    color: inherit;
+    font-size: 1rem;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 24px;
+    place-self: center;
+    transition: all 0.4s ease;
+}
+
+#add-project:hover {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+    transform: translateY(-2px);
+}
