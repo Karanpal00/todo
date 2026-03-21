@@ -56,3 +56,9 @@ header h1 {
     box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
     transform: translateY(-2px);
 }
+
+#todo-list {
+    padding-top: 7%;
+    color: inherit;
+    font-size: 3rem;
+}
