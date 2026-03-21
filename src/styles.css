@@ -22,7 +22,8 @@ body {
 }
 
 header {
-    position: fixed;
+    position: sticky;
+    z-index: 50;
     width: 100%;
     display: grid;
     grid-template-columns: 65% 1fr;
@@ -57,8 +58,11 @@ header h1 {
     transform: translateY(-2px);
 }
 
-#todo-list {
-    padding-top: 7%;
-    color: inherit;
-    font-size: 3rem;
+#content {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+}
+
+#sidebar {
+    border-right: 1px solid rgba(255, 255, 255, 0.08);;
 }
