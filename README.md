@@ -5,7 +5,7 @@ This is my Todo app project from The Odin Project.
 It lets you create projects and add todos inside each project.
 I built this to practice JavaScript, modules, and DOM manipulation.
 
-Click [here](https://karanpal00.github.io/todo/){:target="_blank" rel="noopener"} to try it yourself.
+Click <a href="https://karanpal00.github.io/todo/" target="_blank" rel="noopener">here</a> to try it yourself.
 ## Features
 
 - Add, edit, and delete projects
