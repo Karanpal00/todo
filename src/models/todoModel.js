@@ -13,17 +13,16 @@ class Todo {
 const todos = new Map();
 
 export function createTodo (
-    title = "Add a title", 
-    description = "Write a description", 
-    dueDate  = "Enter duedate", 
-    priority="default"
+    title, 
+    description, 
+    dueDate, 
+    priority
 ) {
-
     const todo = new Todo(title, description, dueDate, priority);
     const id = crypto.randomUUID();
     todos.set(id ,todo);
 
-    return id;
+    return {id, todo};
 }
 
 export function editTodo (todoId, changes) {
@@ -34,7 +33,7 @@ export function editTodo (todoId, changes) {
 
     todos.set(todoId, todo);
 
-    return todoId;
+    return {todoId, todo};
 }
 
 export function deleteTodo (todoId) {

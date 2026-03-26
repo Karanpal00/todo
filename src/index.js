@@ -1,6 +1,6 @@
 import "./styles.css";
 // index.js
-//import { renderProject } from './views/renderProjects.js';
+import { init } from './views/eventHandlers.js';
 
 // expose to browser console for testing
-//window.renderProject = renderProject;
+init();

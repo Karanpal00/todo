@@ -7,13 +7,13 @@ class Project {
 
 const projects = new Map();
 
-export function createProject (name = "Add a title") {
+export function createProject (name) {
     const project = new Project(name);
     const id = crypto.randomUUID();
 
     projects.set(id, project);
 
-    return id;
+    return {id, project};
 }
 
 export function editProject (projectId, name) {
@@ -23,7 +23,7 @@ export function editProject (projectId, name) {
     project.name = name;
     projects.set(projectId, project);
 
-    return projectId;
+    return {projectId, project};
 }
 
 export function deleteProject (projectId) {

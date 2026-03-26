@@ -5,25 +5,36 @@ import {
     deleteProject, 
     getAllProjects 
 } from '../models/projectModel.js'
+import { saveAppData, loadAppData } from '../services/storageService.js';
 
-export function addTodoToProject(projectId, data) {
-    const id = createTodo(data.title, data.description, data.dueDate, data.priority);
+const defaultData = {
+    title : "Add a title", 
+    description : "Write a description", 
+    dueDate : "", 
+    priority : "1",
+    done: false,
+};
+
+export function addTodoToProject(projectId, data = defaultData) {
+    const {id: todoId, todo} = createTodo(data.title, data.description, data.dueDate, data.priority);
+
     const projects = getAllProjects();
 
     const project = projects.get(projectId);
 
     if (!project) return null;
-    
-    project.todos.push(id);
 
-    return id;
+    project.todos.push(todoId);
+
+    return {todoId, todo};
 }
 
 export function editTodoFromProject (todoId, changes) {
-    const id = editTodo(todoId, changes);
-    if (!id) return null;
+    const edited = editTodo(todoId, changes);
+    if (!edited) return null;
 
-    return id;
+    const {todoId: id, todo} = edited;
+    return {id, todo};
 }
 
 export function deleteTodoFromProject (projectId, todoId) {
@@ -41,22 +52,23 @@ export function deleteTodoFromProject (projectId, todoId) {
 
     deleteTodo(todoId);
     
-    return 0;
+    return null;
 }
 
-export function createProjectInModel (name) {
-    let id = createProject(name);
-
-    return id;
+export function createProjectModel (name = "Add title") {
+    const {id, project} = createProject(name);
+    return {id, project};
 }
 
-export function editProjectInModel (projectId, name) {
-    let id = editProject(projectId, name);
+export function editProjectModel (projectId, name) {
+    const edited = editProject(projectId, name);
+    if (!edited) return null;
 
-    return id;
+    const {projectId: id, project} = edited;
+    return {id, project};
 }
 
-export function deleteProjectInModel (projectId) {
+export function deleteProjectModel (projectId) {
     const projects = getAllProjects();
 
     const project = projects.get(projectId);
@@ -68,5 +80,72 @@ export function deleteProjectInModel (projectId) {
 
     deleteProject(projectId);
 
-    return 0;
-} 
+    return null;
+}
+
+export function getProjectsModel () {
+    return getAllProjects();
+}
+
+export function getTodosModel () {
+    return getAllTodos();
+}
+
+export function getProjectById (projectId) {
+    return getAllProjects().get(projectId) ?? null;
+}
+
+export function getTodoById (todoId) {
+    return getAllTodos().get(todoId) ?? null;
+}
+
+export function getTodosByProject (projectId) {
+    const project = getProjectById(projectId);
+    if (!project) return [];
+
+    const todos = getAllTodos();
+    return project.todos
+        .map(todoId => ({ todoId, todo: todos.get(todoId) }))
+        .filter(({ todo }) => Boolean(todo));
+}
+
+export function persistData () {
+    saveAppData(getAllProjects(), getAllTodos());
+}
+
+export function hydrateData () {
+    const data = loadAppData();
+    if (!data) return false;
+
+    const projects = getAllProjects();
+    const todos = getAllTodos();
+
+    projects.clear();
+    todos.clear();
+
+    data.todos.forEach(([id, todo]) => {
+        if (!id || !todo || typeof todo !== 'object') return;
+        todos.set(id, {
+            title: todo.title ?? 'Add a title',
+            description: todo.description ?? 'Write a description',
+            dueDate: todo.dueDate ?? '',
+            priority: todo.priority ?? '1',
+            createDate: todo.createDate ?? '',
+            done: Boolean(todo.done),
+        });
+    });
+
+    data.projects.forEach(([id, project]) => {
+        if (!id || !project || typeof project !== 'object') return;
+        const todoIds = Array.isArray(project.todos)
+            ? project.todos.filter(todoId => todos.has(todoId))
+            : [];
+
+        projects.set(id, {
+            name: project.name ?? 'Add title',
+            todos: todoIds,
+        });
+    });
+
+    return projects.size > 0;
+}
