@@ -22,7 +22,11 @@ export function renderTodo (projectId, todoId, data, container) {
 
     const dueDate = document.createElement('span');
     dueDate.className = 'todo-date';
-    dueDate.textContent = data.dueDate || 'No due date';
+    dueDate.textContent = `Due: ${data.dueDate || 'No due date'}`;
+
+    const createDate = document.createElement('span');
+    createDate.className = 'todo-date';
+    createDate.textContent = `Created: ${data.createDate} |`;
 
     const priorityTag = document.createElement('span');
     const priorityLabel = getPriorityLabel(data.priority);
@@ -32,6 +36,7 @@ export function renderTodo (projectId, todoId, data, container) {
 
     const metaContainer = document.createElement('div');
     metaContainer.className = 'todo-meta';
+    metaContainer.appendChild(createDate);
     metaContainer.appendChild(dueDate);
     metaContainer.appendChild(priorityTag);
 
